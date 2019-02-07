@@ -15,6 +15,8 @@
     <script type="text/javascript">
         var windowsSettingsUrl="@Url.Action("WindowsAuthenticationSettings","Administration")";
         var fileUploadUrl = "@Url.Action("Upload", "fileupload")";
+        var ssoSettingSave = "@Url.Action("UpdateSAMLSettings", "Administration")";
+        var baseUrl = "@GlobalAppSettings.SystemSettings.BaseUrl";
         @*var gsuiteSettings = @Html.Raw(Json.Encode(gsuiteSamlSettings));*@
         var x509CertificateFile = null;
 
@@ -36,13 +38,13 @@
 
 
                 $scope.saveSsoSettings = function() {
-                    ajaxService.postJsonData("/Administration/UpdateSAMLSettings", { "samlSettingsData": $scope.ssoSettings }).then(function(data) {
+                    ajaxService.postJsonData(ssoSettingSave, { "samlSettingsData": $scope.ssoSettings }).then(function(data) {
                         $scope.categories = data;
                         if(data){
                             var messageText = "[[[SSO settings has been updated. The application will be restarted automatically inorder to apply this changes.]]]";
                             messageBox("su-single-sign-on", "[[[SSO Settings]]]", messageText, "success", function () {
                                 onCloseMessageBox();
-                                location.href = "/";
+                                location.href = baseUrl;
                             });
                         }
                         else{
